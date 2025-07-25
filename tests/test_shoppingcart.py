@@ -1,5 +1,8 @@
 # tests/test_shoppingcart.py
 import pytest
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from shoppingcart import app, r
 
 class TestConfig:

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Redistest.iml" filepath="$PROJECT_DIR$/.idea/Redistest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Redis_shopping_cart.iml" filepath="$PROJECT_DIR$/.idea/Redis_shopping_cart.iml" />
     </modules>
   </component>
 </project>
