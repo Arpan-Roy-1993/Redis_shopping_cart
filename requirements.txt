@@ -2,3 +2,7 @@ flask
 redis
 openai
 pytest
+python-dotenv
+prometheus-flask-exporter
+flask-limiter
+flask-talisman
