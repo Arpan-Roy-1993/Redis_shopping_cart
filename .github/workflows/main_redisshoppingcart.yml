@@ -24,14 +24,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://testdockerarpan.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_ed9f7f124e7a4f329736d59b96d6b736 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_ce99b77318624628814851d79df9f17f }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_1cb131cd31a045258243657614624e91 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_c639779faf944cbdb6e144793bdcce95 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: testdockerarpan.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ed9f7f124e7a4f329736d59b96d6b736 }}/redisshoppingcart:${{ github.sha }}
+        tags: testdockerarpan.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_1cb131cd31a045258243657614624e91 }}/redisshoppingcart:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -48,5 +48,5 @@ jobs:
       with:
         app-name: 'redisshoppingcart'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_c760f639fe584b2f9b1fcbeb51601e3d }}
-        images: 'testdockerarpan.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ed9f7f124e7a4f329736d59b96d6b736 }}/redisshoppingcart:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_0fe9c850b6774667a75ae58050b3ae9a }}
+        images: 'testdockerarpan.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_1cb131cd31a045258243657614624e91 }}/redisshoppingcart:${{ github.sha }}'
