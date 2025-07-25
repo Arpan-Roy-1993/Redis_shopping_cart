@@ -42,3 +42,7 @@ def test_remove_item_completely(client):
     assert response.status_code == 302
     cart = r.hgetall('cart:user123')
     assert b'item3' not in cart
+
+def test_redis_connection():
+    pong = r.ping()
+    assert pong is True
