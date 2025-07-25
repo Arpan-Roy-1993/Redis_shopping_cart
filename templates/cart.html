@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f4f8;
+            margin: 0;
+            padding: 2rem;
+            color: #333;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #1a73e8;
+        }
+
+        .message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 0.6rem;
+            margin: 0.3rem 0 1rem 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1669c1;
+        }
+
+        ul {
+            padding-left: 1.2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>🛒 Shopping Cart for <code>{{ user_id }}</code></h2>
+
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+
+    <div class="card">
+        <h3>Current Cart</h3>
+        {% if cart %}
+            <ul>
+                {% for sku, qty in cart.items() %}
+                    <li><strong>{{ sku }}</strong>: {{ qty }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p><em>The cart is empty.</em></p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h3>Add Item</h3>
+        <form method="POST">
+            <label>SKU:</label>
+            <input type="text" name="sku" placeholder="e.g., SKU123" required>
+
+            <label>Quantity:</label>
+            <input type="number" name="quantity" value="1" min="1" required>
+
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Decrement Item Quantity</h3>
+        <form method="POST" action="{{ url_for('remove_item', user_id=user_id) }}">
+            <label>SKU to Remove:</label>
+            <input type="text" name="sku_to_remove" placeholder="e.g., SKU123" required>
+
+            <label>Quantity to Remove:</label>
+            <input type="number" name="quantity_to_remove" value="1" min="1" required>
+
+            <button type="submit">Remove from Cart</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    Built with Flask + Redis | © {{ user_id }}
+</footer>
+</body>
+</html>
