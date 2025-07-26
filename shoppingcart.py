@@ -1,11 +1,22 @@
 from flask import Flask, request, render_template, redirect, url_for
 import redis
-
+import os
 app = Flask(__name__)
 
 # r = redis.Redis(host='35.229.24.83', port=10001)
 r = redis.Redis(host='localhost', port=6379)
 
+
+# r= redis.Redis(
+#     host=os.getenv("REDIS_HOST","redisarpancache.redis.cache.windows.net"),
+#     port=int(os.getenv("REDIS_PORT", 6380)),
+#     password=os.getenv("REDIS_PASSWORD", "YMkcg5fUYrJhqb7vuB6tQseogrKgEvS22AzCaHCEfbI="),
+#     ssl=True  # if connecting to Azure Cache for Redis
+# )
+
+# r=redis.from_url("rediss://:YMkcg5fUYrJhqb7vuB6tQseogrKgEvS22AzCaHCEfbI=@redisarpancache.redis.cache.windows.net:6380")
+
+print("redis connection:", r)
 @app.route('/')
 def home():
     return redirect(url_for('view_cart', user_id='user123'))
