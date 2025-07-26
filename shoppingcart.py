@@ -13,7 +13,6 @@ r= redis.Redis(
     password=os.getenv("REDIS_PASSWORD", "YMkcg5fUYrJhqb7vuB6tQseogrKgEvS22AzCaHCEfbI="),
     ssl=True  # if connecting to Azure Cache for Redis
 )
-
 # r=redis.from_url("rediss://:YMkcg5fUYrJhqb7vuB6tQseogrKgEvS22AzCaHCEfbI=@redisarpancache.redis.cache.windows.net:6380")
 
 @app.route('/')
