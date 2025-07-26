@@ -7,12 +7,19 @@ app = Flask(__name__)
 # r = redis.Redis(host='localhost', port=6379)
 
 
-r= redis.Redis(
-    host=os.getenv("REDIS_HOST","redisarpancache.redis.cache.windows.net"),
+# r= redis.Redis(
+#     host=os.getenv("REDIS_HOST","arpancache.redis.cache.windows.net"),
+#     port=int(os.getenv("REDIS_PORT", 6380)),
+#     password=os.getenv("REDIS_PASSWORD", "ybKbpAU9lg090duwSMEwQavaVTPfDfP2kAzCaFG5vFs="),
+#     ssl=True  # if connecting to Azure Cache for Redis
+# )
+r = redis.Redis(
+    host=os.getenv("REDIS_HOST"),
     port=int(os.getenv("REDIS_PORT", 6380)),
-    password=os.getenv("REDIS_PASSWORD", "YMkcg5fUYrJhqb7vuB6tQseogrKgEvS22AzCaHCEfbI="),
-    ssl=True  # if connecting to Azure Cache for Redis
+    password=os.getenv("REDIS_PASSWORD"),
+    ssl=True
 )
+
 # r=redis.from_url("rediss://:YMkcg5fUYrJhqb7vuB6tQseogrKgEvS22AzCaHCEfbI=@redisarpancache.redis.cache.windows.net:6380")
 
 @app.route('/')
