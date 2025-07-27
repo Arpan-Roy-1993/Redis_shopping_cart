@@ -1,6 +1,18 @@
 from flask import Flask, request, render_template, redirect, url_for
 import redis
 import os
+from flask import jsonify
+import openai
+import dotenv
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
+
+if not api_key:
+    raise RuntimeError("Missing OPENAI_API_KEY in environment.")
+
 app = Flask(__name__)
 
 # r = redis.Redis(host='35.229.24.83', port=10001)
@@ -40,7 +52,33 @@ def view_cart(user_id):
 
     cart_raw = r.hgetall(f'cart:{user_id}')
     cart = {k.decode(): int(v) for k, v in cart_raw.items()}  # Decode keys/values
-    return render_template('cart.html', cart=cart, user_id=user_id, message=message)
+    summary = ""
+    if cart:
+        cart_lines = [f"{v} x {k}" for k, v in cart.items()]
+        cart_text = "\n".join(cart_lines)
+
+        prompt = f"""
+        You are a helpful assistant. Summarize the following shopping cart in one friendly sentence.
+
+        Items:
+        {cart_text}
+        """
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.7
+            )
+            summary = response.choices[0].message.content
+        except Exception as e:
+            summary = f"(Could not generate summary: {str(e)})"
+    else:
+        summary = "Your cart is currently empty."
+    return render_template('cart.html', cart=cart, user_id=user_id, message=message, summary=summary)
+
+    # return render_template('cart.html', cart=cart, user_id=user_id, message=message)
 
 @app.route('/cart/<user_id>/remove', methods=['POST'])
 def remove_item(user_id):
@@ -56,6 +94,7 @@ def remove_item(user_id):
             else:
                 r.hdel(f'cart:{user_id}', sku)
     return redirect(url_for('view_cart', user_id=user_id))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

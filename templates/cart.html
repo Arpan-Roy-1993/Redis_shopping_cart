@@ -96,10 +96,17 @@
                     <li><strong>{{ sku }}</strong>: {{ qty }}</li>
                 {% endfor %}
             </ul>
+
+            {% if summary %}
+                <div class="message" style="background-color: #e8f0fe; color: #1a73e8;">
+                    <strong>Cart Summary:</strong> {{ summary }}
+                </div>
+            {% endif %}
         {% else %}
             <p><em>The cart is empty.</em></p>
         {% endif %}
     </div>
+
 
     <div class="card">
         <h3>Add Item</h3>
