@@ -9,10 +9,9 @@ from openai import OpenAI
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-if not api_key:
-    raise RuntimeError("Missing OPENAI_API_KEY in environment.")
+client = OpenAI(api_key=api_key)
+
 
 app = Flask(__name__)
 
@@ -59,10 +58,22 @@ def view_cart(user_id):
         cart_text = "\n".join(cart_lines)
 
         prompt = f"""
-        You are a helpful assistant. Summarize the following shopping cart in one friendly sentence.
+        You are an e-commerce assistant. Given the following shopping cart items, do two things:
 
-        Items:
+        1. Write a friendly one-sentence summary of what the user has in their cart.
+        2. Suggest 2-3 related products the user might want to add to their cart.
+
+        Shopping cart:
         {cart_text}
+
+        Respond in this format:
+
+         <summary here>
+
+        Recommendations:
+        - <item 1>
+        - <item 2>
+        - <item 3>
         """
 
         try:
@@ -86,14 +97,19 @@ def remove_item(user_id):
     quantity = int(request.form.get('quantity_to_remove', 1))
 
     if sku:
-        current_qty = r.hget(f'cart:{user_id}', sku)
-        if current_qty is not None:
-            new_qty = int(current_qty) - quantity
+        current_qty_raw = r.hget(f'cart:{user_id}', sku)
+
+        if current_qty_raw is not None:
+            current_qty = int(current_qty_raw.decode())
+
+            new_qty = current_qty - quantity
             if new_qty > 0:
                 r.hset(f'cart:{user_id}', sku, new_qty)
             else:
                 r.hdel(f'cart:{user_id}', sku)
+
     return redirect(url_for('view_cart', user_id=user_id))
+
 
 
 if __name__ == '__main__':
