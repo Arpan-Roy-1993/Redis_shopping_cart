@@ -9,6 +9,7 @@ from openai import OpenAI
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 if not api_key:
     raise RuntimeError("Missing OPENAI_API_KEY in environment.")
@@ -63,7 +64,6 @@ def view_cart(user_id):
         Items:
         {cart_text}
         """
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
         try:
             response = client.chat.completions.create(
