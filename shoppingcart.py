@@ -6,15 +6,15 @@ import openai
 import dotenv
 from dotenv import load_dotenv
 from openai import OpenAI
-import anthropic  # New
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
-# claude_api_key = os.getenv("ANTHROPIC_API_KEY")
+
 
 client = OpenAI(api_key=api_key)
 
-# client = anthropic.Anthropic(api_key=claude_api_key)
+
+
 
 # try:
 #     models = client.models.list()

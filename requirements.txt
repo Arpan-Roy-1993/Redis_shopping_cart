@@ -6,5 +6,5 @@ python-dotenv
 prometheus-flask-exporter
 flask-limiter
 flask-talisman
-
+anthropic
 
