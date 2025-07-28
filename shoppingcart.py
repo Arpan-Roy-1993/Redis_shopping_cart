@@ -6,13 +6,22 @@ import openai
 import dotenv
 from dotenv import load_dotenv
 from openai import OpenAI
+import anthropic  # New
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
+claude_api_key = os.getenv("ANTHROPIC_API_KEY")
 
-client = OpenAI(api_key=api_key)
+# client = OpenAI(api_key=api_key)
 
+client = anthropic.Anthropic(api_key=claude_api_key)
 
+# try:
+#     models = client.models.list()
+#     for model in models:
+#         print(model.id)
+# except Exception as e:
+#     print(f"Error fetching models: {e}")
 app = Flask(__name__)
 
 # r = redis.Redis(host='35.229.24.83', port=10001)
@@ -77,12 +86,16 @@ def view_cart(user_id):
         """
 
         try:
-            response = client.chat.completions.create(
-                model="gpt-4",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7
+            response = client.messages.create(
+                model="claude-3-opus-20240229",
+                max_tokens=500,
+                temperature=0.7,
+                system="You are a helpful e-commerce assistant.",
+                messages=[
+                    {"role": "user", "content": prompt}
+                ]
             )
-            summary = response.choices[0].message.content
+            summary = response.content[0].text
         except Exception as e:
             summary = f"(Could not generate summary: {str(e)})"
     else:
