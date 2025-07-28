@@ -16,12 +16,12 @@ claude_api_key = os.getenv("ANTHROPIC_API_KEY")
 
 client = anthropic.Anthropic(api_key=claude_api_key)
 
-# try:
-#     models = client.models.list()
-#     for model in models:
-#         print(model.id)
-# except Exception as e:
-#     print(f"Error fetching models: {e}")
+try:
+    models = client.models.list()
+    for model in models:
+        print(model.id)
+except Exception as e:
+    print(f"Error fetching models: {e}")
 app = Flask(__name__)
 
 # r = redis.Redis(host='35.229.24.83', port=10001)
